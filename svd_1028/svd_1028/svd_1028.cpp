@@ -130,8 +130,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 
-	//打印结果
-
 
 	U.Print();
 	cout<<endl;
