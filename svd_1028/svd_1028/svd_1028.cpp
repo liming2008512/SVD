@@ -17,7 +17,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	return 0;
 }
-
+/*
 void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 {
 	Matrix P(m,m),H(n,n),tH(n,n);
@@ -69,4 +69,4 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 	tempU1.Print();
 	tempU2.Print();
 
-}
+}*/

@@ -4,12 +4,11 @@
 class HouseHold
 {
 private:
-	Matrix T;
+	Matrix * T;
 	double delta;
 public:
-	HouseHold();
+	//HouseHold();
 	
 	void HouseHolder(Vector v,int n);
-}
-
+};
 #endif // ! HOUSEHOLD_H

@@ -13,7 +13,7 @@ public:
 
 	void set(double x,double y);//重新由x,y计算c,s,r
 	void update(Matrix,int k);//Givens变换
-}
+};
 
 
 

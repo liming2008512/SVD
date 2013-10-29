@@ -8,14 +8,15 @@
 #include "HouseHold.h"
 #include <math.h>
 
+
+
 void HouseHold::HouseHolder(Vector v,int n)
 {
-	int i;
 	delta=v.modular();
 	if(delta==0)
 	{
 		Matrix temp(n);
-		T=temp;
+		T=&temp;
 	}
 	else
 	{
@@ -23,13 +24,13 @@ void HouseHold::HouseHolder(Vector v,int n)
 	    if(v.modular()==0)//以后要改
 		{
 		Matrix temp(n);
-		T=temp;
+		T=&temp;
 	    }
 	    else 
 	    v.Normalize();
-	    v.Span(T);
+	    v.Span(*T);
 	    Matrix temp(n);
-		T.NumProd(2);
-	    temp.Minus(T);
+		T->NumProd(2);
+	    temp.Minus(*T);
 	}
 }
