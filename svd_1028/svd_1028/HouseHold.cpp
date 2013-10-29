@@ -8,7 +8,7 @@
 #include "HouseHold.h"
 #include <math.h>
 
-
+//g¸üÐÂ°æ±¾
 
 void HouseHold::HouseHolder(Vector v,int n)
 {
