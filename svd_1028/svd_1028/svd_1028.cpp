@@ -15,7 +15,135 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n);//���Խ
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	//initalize
+	int m,n;//m是行数，n是列�?
+	fstream infile("InputMatrix1.txt");
+	infile>>m;
+	infile>>n;
+	Matrix U(m,m),V(n,n);
+	Matrix A(m,n);//此处默认m>=n
+	Matrix tU(n,n),tV(n,n),temp(n,n);
+	for(int i=0;i<m;i++)
+		for(int j=0;j<n;j++)
+			infile>>A.matrix[i][j];
+	Vector B1(n);
+	Vector B2(n);
+
+	//二对角化
+	BigDiag(A,B1,B2,U,V,m,n);
+
+	B1.Print();
+	B2.Print();
+
+	//U.Print();
+	//V.Print();
+
+	//收敛检�?
+	int p=0,q=0,flag=0;
+	double e=0;
+	cout<<"请输入误差范�?";
+	cin>>e;
+	SVD svd1;
+	svd1.B1=B1;
+	svd1.B2=B2;
+
+
+	for(int i=1;i<n;i++)
+	{
+		if(fabs(B2.vector[i])<=e*(fabs(B1.vector[i])+fabs(B1.vector[i-1])))
+		{
+			B2.vector[i]=0;
+			flag=1;
+		}
+	}
+
+	while(flag==0)
+	{
+		for(int j=n-1;j>0;j--)
+		{
+			if(B2.vector[j]!=0)
+			{
+				flag=0;
+				q=j;
+				for(int k=q;k>0;k--)
+					if(B2.vector[k]==0)
+						p=k;
+				double max=B1.max();
+
+				int flag2=0;
+				for(int i=p;p<q;p++)
+					if(B1.vector[i]<=e*max)
+					{
+						flag2++;
+						B1.vector[i]=0;
+						double x=B2.vector[i+1],y=B1.vector[i+1];
+						B2.vector[i+1]=0;
+						int l=1;
+
+						while(l<q-i)
+						{
+							Givens g(y,x);
+							B1.vector[i+l]=g.r;
+							
+							g.Update(U,i);
+							x=g.s*B2.vector[i+l+1];
+							B2.vector[i+l+1]=g.c*B2.vector[i+l+1];
+							y=B1.vector[i+l+1];
+							l++;
+						}
+					}
+					if(flag2==0)
+					{
+						svd1.QR(p,q);
+						Unit(temp,n);
+						for(int ii=p;ii<=q;ii++)
+							for(int jj=p;jj<=q;jj++)
+								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
+						tU.MatrixMultiply(U,temp);
+						temp.~Matrix();
+
+						temp=U;
+						U=tU;
+						tU=temp;
+
+						Unit(temp,n);
+						for(int ii=p;ii<=q;ii++)
+							for(int jj=p;jj<=q;jj++)
+								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
+						tV.MatrixMultiply(V,temp);
+						temp.~Matrix();
+
+						temp=V;
+						V=tV;
+						tV=temp;
+					}
+			}
+			for(int i=1;i<n;i++)
+			{
+				if(fabs(B2.vector[i])<=e*(fabs(B1.vector[i])+fabs(B1.vector[i-1])))
+				{
+					B2.vector[i]=0;
+					flag=1;
+				}
+			}
+
+		}
+	}
+
+	//打印结果
+
+
+	U.Print();
+	cout<<endl;
+	B1.Print();
+	B2.Print();
+	cout<<endl;
+	V.Print();
+
+
+	system("pause");
 	return 0;
+
 }
 /*
 void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
